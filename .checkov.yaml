@@ -14,3 +14,19 @@ skip-check:
   # the disclosure data itself — which is public DOL filing information anyway.
   # CloudWatch's AWS-managed encryption applies.
   - CKV_AWS_158
+  # The data bucket holds PUBLIC DOL disclosure filings — the same files anyone
+  # can download from dol.gov — plus derived Parquet. Each of these is a real
+  # control that does not earn its cost here:
+  #
+  #   CKV_AWS_144  cross-region replication: a second region's storage bill to
+  #                protect data that can be re-downloaded and re-derived in an
+  #                hour. The pipeline IS the recovery plan.
+  #   CKV_AWS_145  a KMS CMK instead of SSE-S3: key management for public data.
+  #   CKV_AWS_18   access logging: an S3 log bucket to record reads of public
+  #                filings, by one job that runs a few times a year.
+  #   CKV2_AWS_62  event notifications: nothing subscribes; EMR Serverless is
+  #                invoked directly, not by object-created events.
+  - CKV_AWS_144
+  - CKV_AWS_145
+  - CKV_AWS_18
+  - CKV2_AWS_62

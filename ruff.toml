@@ -91,11 +91,8 @@ ignore = [
 "**/feedback/**" = ["T201"]
 
 [lint.isort]
-# src/ and tests/ are added to sys.path at runtime (the Lambda/consumer imports
-# them as top-level modules). Without this, ruff classifies them as third-party
-# when invoked from the repo root and first-party when invoked from inside it,
-# and the two orderings fight each other.
-known-first-party = ["processor", "fake_kafka"]
-
-[lint.isort]
+# src/ is added to sys.path at runtime (the Spark job imports `lca` as a
+# top-level package). Without this, ruff classifies it as third-party when
+# invoked from the repo root and first-party from inside it, and the two
+# orderings fight each other.
 known-first-party = ["lca"]

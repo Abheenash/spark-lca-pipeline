@@ -7,6 +7,7 @@ a temp directory, and asserts on what actually landed on disk.
 import csv
 
 import pytest
+
 from lca.job import prepare, read_raw, run
 from lca.schema import LCA_SCHEMA
 
