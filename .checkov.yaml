@@ -1,0 +1,16 @@
+# Checkov config. `skip-check` is a REVIEWED baseline — each entry carries its
+# reason. Everything else is a hard gate.
+directory:
+  - terraform
+compact: true
+quiet: true
+skip-check:
+  # 1-year log retention on Spark driver/executor logs. These are diagnostic
+  # output for a job that runs a handful of times a year and either succeeds or
+  # is re-run; 30 days covers the window in which anyone looks. A year of Spark
+  # executor logs is storage cost with no reader.
+  - CKV_AWS_338
+  # A CMK for the log group. The logs contain job progress and row counts, not
+  # the disclosure data itself — which is public DOL filing information anyway.
+  # CloudWatch's AWS-managed encryption applies.
+  - CKV_AWS_158
