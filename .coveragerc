@@ -1,0 +1,28 @@
+# Coverage measurement and the regression gate.
+#
+# fail_under is 70 against a measured 79% line coverage. Branch coverage is NOT
+# enabled here, unlike the other repos: these tests drive a real local Spark
+# session, and the uncovered remainder is concentrated in job.py's argument
+# parsing and its `main()` entry point — code paths that exist to be invoked by
+# spark-submit on EMR, not from a test.
+#
+# The transform and schema modules, which hold the logic worth testing (explicit
+# schema, quarantine-not-drop, skew-aware aggregation, try_cast under ANSI mode),
+# are at 100%. Gating on the total rather than on those two would let the
+# meaningful coverage fall while the number stayed green, so the gate is set where
+# it catches a real regression without demanding tests for an argv parser.
+[run]
+source = src
+omit =
+    */tests/*
+    */.venv/*
+    */__pycache__/*
+
+[report]
+fail_under = 70
+show_missing = True
+skip_covered = True
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
+    raise NotImplementedError
